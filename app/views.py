@@ -5,9 +5,12 @@ Werkzeug Documentation:  https://werkzeug.palletsprojects.com/
 This file creates your application.
 """
 
-from app import app
+from app import app, dp
 from flask import render_template, request, jsonify, send_file
 import os
+from app.forms import MovieForm
+from app.models import Movies
+
 
 
 ###
@@ -61,3 +64,92 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
+
+
+
+@app.route('/api/movies', methods=['POST'])
+def create_movie():
+    form = MovieForm()
+
+
+    if form.validate_on_submit():
+        title = form.title.data
+        poster = form.poster.data
+        description = form.description.data
+
+
+        movie = Movies(title = title, poster = poster, description=description)
+        dp.session.add(movie)
+        dp.session.commit()
+
+
+        fileName = secure_filename(poster.filename)
+        poster.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+
+        return jsonify({
+            "message": "Movie Successfully added",
+            "title": title,
+            "poster": poster,
+            "description": description
+        })
+    else:
+        return jsonify({
+            "errors": form_errors(form)
+        })
+
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/api/v1/movies', methods=['POST'])
+def movies():
+    form = MovieForm()
+    if form.validate_on_submit():
+        # Get form data
+        title = form.title.data
+        poster = form.poster.data
+        description = form.description.data
+        
+        # Save movie to database
+        movie = Movie(title=title, poster=poster, description=description)
+        db.session.add(movie)
+        db.session.commit()
+        
+        # Save file to uploads folder
+        filename = secure_filename(poster.filename)
+        poster.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
+        # Return JSON response
+        return jsonify({
+            'message': 'Movie saved successfully',
+            'title': title,
+            'poster': filename,
+            'description': description
+        })
+    else:
+        # Return form errors
+        errors = form_errors(form)
+        return jsonify(errors=errors), 400
