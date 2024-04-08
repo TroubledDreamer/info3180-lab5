@@ -9,5 +9,5 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY', 'Som3$ec5etK*y')
     UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER')
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI', '').replace('postgres://', 'postgresql://')
-    print(SQLALCHEMY_DATABASE_URI)
+    SECRET_KEY="dfdfdfd"
     SQLALCHEMY_TRACK_MODIFICATIONS = False # This is just here to suppress a warning from SQLAlchemy as it will soon be removed
