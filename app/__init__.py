@@ -4,13 +4,14 @@ from flask_migrate import Migrate
 from .config import Config
 from flask_wtf.csrf import CSRFProtect 
 
+import os
 
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-print(app.config['SECRET_KEY'], "dddddddddd")
+
 
 csrf = CSRFProtect(app)
 

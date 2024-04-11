@@ -1,26 +1,10 @@
 
-<template>
-    <form @submit.prevent="saveMovie" id="movieForm">
-        <div>
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" />
-        </div>
-        <div>
-            <label for="description">Description:</label>
-            <textarea id="description" name="description"></textarea>
-        </div>
-        <div>
-            <label for="poster">Poster:</label>
-            <input type="file" id="poster" name="poster" />
-        </div>
-        <button type="submit">Submit</button>
-    </form>
-</template>
-
 <script setup>
 import { ref , onMounted } from 'vue';
 let csrf_token = ref("");
-
+let fetchResponseType = ref("")
+let fetchResponse = ref("")
+    
 
 
 
@@ -61,6 +45,14 @@ function saveMovie() {
 
     .then(function(data) {
         console.log(data);
+        fetchResponse.value = data
+                    
+        if(data.hasOwnProperty('errors')) {
+                fetchResponseType.value = "danger"
+            } else {
+                fetchResponseType.value = "success"
+            }
+
     })
     .catch(function(error) {
         console.log(error);
@@ -75,3 +67,84 @@ function saveMovie() {
 
 
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<template>
+    <form @submit.prevent="saveMovie" id="movieForm" class="movie-form">
+        <div class="form-group">
+            <label for="title" class="form-label">Title:</label>
+            <input type="text" id="title" name="title" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="description" class="form-label">Description:</label>
+            <textarea id="description" name="description" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="poster" class="form-label">Poster:</label>
+            <input type="file" id="poster" name="poster" accept=".jpg,.png" class="form-control" />
+        </div>
+        <button class="submit-btn">Submit</button>
+    </form>
+</template>
+
+<style scoped>
+.movie-form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.form-control[type="file"] {
+    border: none;
+}
+
+textarea.form-control {
+    height: 100px;
+}
+
+.submit-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+</style>

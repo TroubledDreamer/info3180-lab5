@@ -17,12 +17,16 @@ class Movies(db.Model):
     def __repr__(self):
         return '<Movie: %r>' % (self.title)
     
-    def __init__(self, title, description, poster, created_at):
+    def __init__(self, title, description, poster):
         self.title = title
         self.description = description
         self.poster = poster
         today = date.today()
         self.created_at = today.strftime('%Y-%m-%d')
 
+
     def get_id(self):
-            return str(self.id)
+        try:
+            return str(self.id)  # python 2 support
+        except NameError:
+            return str(self.id) 

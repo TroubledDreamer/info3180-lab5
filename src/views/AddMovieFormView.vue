@@ -2,7 +2,7 @@
 
 <template>
     <div>
-        <h1>Add Movie Form View</h1>
+        <h1>Add Movie</h1>
         <MovieForm />
     </div>
 </template>
@@ -17,5 +17,5 @@ export default {
   components: {
     MovieForm // Registering MovieForm component for use in this template
   }
-}
+};
 </script>
